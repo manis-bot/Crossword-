@@ -393,3 +393,123 @@ renderGrid=function(){
     attachEditorEvents();
 
 };
+// ============================
+// PART 7 - Export / Import / Auto Save
+// ============================
+
+// Auto Save
+setInterval(() => {
+    try {
+        updateLetters();
+
+        localStorage.setItem("crossword-autosave",
+            JSON.stringify({
+                layout,
+                numbers,
+                letters
+            })
+        );
+    } catch (e) {}
+}, 5000);
+
+
+// Export JSON
+function exportPuzzle(){
+
+    updateLetters();
+
+    const data={
+        layout,
+        numbers,
+        letters
+    };
+
+    const text=JSON.stringify(data,null,2);
+
+    const blob=new Blob([text],{
+        type:"application/json"
+    });
+
+    const a=document.createElement("a");
+
+    a.href=URL.createObjectURL(blob);
+
+    a.download="crossword.json";
+
+    a.click();
+
+}
+
+window.exportPuzzle=exportPuzzle;
+
+
+// Import JSON
+
+function importPuzzle(file){
+
+    const reader=new FileReader();
+
+    reader.onload=function(){
+
+        const data=JSON.parse(reader.result);
+
+        layout.splice(0,81,...data.layout);
+
+        Object.keys(numbers).forEach(k=>delete numbers[k]);
+
+        Object.assign(numbers,data.numbers);
+
+        letters.splice(0,81,...data.letters);
+
+        renderGrid();
+
+        document.querySelectorAll(".cell").forEach((cell,index)=>{
+
+            if(cell.tagName==="INPUT"){
+
+                cell.value=letters[index]||"";
+
+            }
+
+        });
+
+    };
+
+    reader.readAsText(file);
+
+}
+
+window.importPuzzle=importPuzzle;
+
+
+// Auto Load
+
+window.addEventListener("load",()=>{
+
+    const data=localStorage.getItem("crossword-autosave");
+
+    if(!data) return;
+
+    const obj=JSON.parse(data);
+
+    layout.splice(0,81,...obj.layout);
+
+    Object.keys(numbers).forEach(k=>delete numbers[k]);
+
+    Object.assign(numbers,obj.numbers);
+
+    letters.splice(0,81,...obj.letters);
+
+    renderGrid();
+
+    document.querySelectorAll(".cell").forEach((cell,index)=>{
+
+        if(cell.tagName==="INPUT"){
+
+            cell.value=letters[index]||"";
+
+        }
+
+    });
+
+});
