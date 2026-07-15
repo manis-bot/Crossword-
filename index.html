@@ -3,51 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crossword 9×9</title>
-
-<style>
-body{
-font-family:Arial,sans-serif;
-background:#f4f4f4;
-text-align:center;
-margin:20px;
-}
-h1{
-color:#1565c0;
-}
-.grid{
-display:grid;
-grid-template-columns:repeat(9,40px);
-gap:2px;
-justify-content:center;
-margin-top:20px;
-}
-.grid input{
-width:40px;
-height:40px;
-text-align:center;
-font-size:22px;
-text-transform:uppercase;
-border:1px solid #333;
-}
-</style>
+<title>Daily Crossword</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<h1>🧩 Crossword 9×9</h1>
+<h1>🧩 Daily Crossword 9×9</h1>
 
-<div class="grid" id="grid"></div>
+<div id="crossword"></div>
 
-<script>
-const grid=document.getElementById("grid");
-
-for(let i=0;i<81;i++){
-let cell=document.createElement("input");
-cell.maxLength=1;
-grid.appendChild(cell);
-}
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
