@@ -1,61 +1,87 @@
 const crossword = document.getElementById("crossword");
 
-const layout = [
-0,0,0,1,0,0,0,0,0,
-0,1,0,0,0,1,0,1,0,
-0,0,0,1,0,0,0,0,0,
-1,0,1,0,0,0,1,0,1,
-0,0,0,0,1,0,0,0,0,
-1,0,1,0,0,0,1,0,1,
-0,0,0,1,0,0,0,0,0,
-0,1,0,0,0,1,0,1,0,
-0,0,0,1,0,0,0,0,0
-];
+let editMode = true;
+let selectedCell = null;
+let holdTimer = null;
 
-// Manual Numbering
-const numbers = {
-0:1,
-4:2,
-8:3,
-11:4,
-20:5,
-28:6,
-36:7,
-44:8,
-54:9,
-63:10,
-72:11
-};
+const layout = new Array(81).fill(0);
+const numbers = {};
 
-layout.forEach((cell,index)=>{
+function renderGrid() {
+    crossword.innerHTML = "";
 
-    const wrapper=document.createElement("div");
-    wrapper.className="wrapper";
+    for (let i = 0; i < 81; i++) {
 
-    if(cell===1){
+        const wrapper = document.createElement("div");
+        wrapper.className = "wrapper";
 
-        const black=document.createElement("div");
-        black.className="cell black";
-        wrapper.appendChild(black);
+        if (layout[i] === 1) {
 
-    }else{
+            const black = document.createElement("div");
+            black.className = "cell black";
 
-        const input=document.createElement("input");
-        input.className="cell";
-        input.maxLength=1;
-        wrapper.appendChild(input);
+            black.addEventListener("dblclick", () => {
+                if (!editMode) return;
+                layout[i] = 0;
+                renderGrid();
+            });
+
+            wrapper.appendChild(black);
+
+        } else {
+
+            const input = document.createElement("input");
+            input.className = "cell";
+            input.type = "text";
+            input.maxLength = 2;
+
+            input.value = "";
+
+            input.addEventListener("dblclick", () => {
+                if (!editMode) return;
+                layout[i] = 1;
+                renderGrid();
+            });
+
+            input.addEventListener("touchstart", () => {
+
+                if (!editMode) return;
+
+                holdTimer = setTimeout(() => {
+
+                    selectedCell = i;
+
+                    document.getElementById("popup").style.display = "flex";
+
+                    document.getElementById("numberInput").value =
+                        numbers[i] || "";
+
+                }, 600);
+
+            });
+
+            input.addEventListener("touchend", () => {
+                clearTimeout(holdTimer);
+            });
+
+            wrapper.appendChild(input);
+
+        }
+
+        if (numbers[i] !== undefined) {
+
+            const no = document.createElement("span");
+            no.className = "number";
+            no.textContent = numbers[i];
+
+            wrapper.appendChild(no);
+
+        }
+
+        crossword.appendChild(wrapper);
 
     }
 
-    if(numbers[index]!=undefined){
+}
 
-        const num=document.createElement("span");
-        num.className="number";
-        num.innerText=numbers[index];
-        wrapper.appendChild(num);
-
-    }
-
-    crossword.appendChild(wrapper);
-
-});
+renderGrid();
