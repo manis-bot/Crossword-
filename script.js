@@ -321,7 +321,7 @@ window.loadPuzzle=loadPuzzle;
 // PART 6 - Double Tap + Hold
 // ============================
 
-let lastTap = 0;
+let lastTap2 = 0;
 
 function attachEditorEvents() {
 
@@ -334,7 +334,7 @@ function attachEditorEvents() {
 
             const now=Date.now();
 
-            if(now-lastTap<300){
+            if(now-lastTap2<300){
 
                 layout[index]=layout[index]?0:1;
 
@@ -344,7 +344,7 @@ function attachEditorEvents() {
 
             }
 
-            lastTap=now;
+            lastTap2=now;
 
         });
 
