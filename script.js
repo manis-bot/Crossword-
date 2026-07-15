@@ -12,49 +12,50 @@ const layout = [
 0,0,0,1,0,0,0,0,0
 ];
 
-function toggleBlack(cell){
-    let timer;
+// Manual Numbering
+const numbers = {
+0:1,
+4:2,
+8:3,
+11:4,
+20:5,
+28:6,
+36:7,
+44:8,
+54:9,
+63:10,
+72:11
+};
 
-    cell.addEventListener("touchstart",()=>{
-        timer=setTimeout(()=>{
-            cell.classList.toggle("black");
+layout.forEach((cell,index)=>{
 
-            if(cell.classList.contains("black")){
-                cell.disabled=true;
-                cell.value="";
-            }else{
-                cell.disabled=false;
-            }
-        },600);
-    });
-
-    cell.addEventListener("touchend",()=>{
-        clearTimeout(timer);
-    });
-
-    cell.addEventListener("touchmove",()=>{
-        clearTimeout(timer);
-    });
-}
-
-layout.forEach(cell=>{
+    const wrapper=document.createElement("div");
+    wrapper.className="wrapper";
 
     if(cell===1){
 
-        const input=document.createElement("input");
-        input.className="cell black";
-        input.disabled=true;
-        toggleBlack(input);
-        crossword.appendChild(input);
+        const black=document.createElement("div");
+        black.className="cell black";
+        wrapper.appendChild(black);
 
     }else{
 
         const input=document.createElement("input");
         input.className="cell";
         input.maxLength=1;
-        toggleBlack(input);
-        crossword.appendChild(input);
+        wrapper.appendChild(input);
 
     }
+
+    if(numbers[index]!=undefined){
+
+        const num=document.createElement("span");
+        num.className="number";
+        num.innerText=numbers[index];
+        wrapper.appendChild(num);
+
+    }
+
+    crossword.appendChild(wrapper);
 
 });
