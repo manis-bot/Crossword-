@@ -3,15 +3,103 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daily Crossword</title>
-<link rel="stylesheet" href="style.css">
-</head>
+<title>Hindi Crossword Editor</title>
 
+<link rel="stylesheet" href="style.css">
+
+</head>
 <body>
 
-<h1>🧩 Daily Crossword 9×9</h1>
+<header>
+<h1>🧩 Hindi Crossword Editor</h1>
+</header>
 
-<div id="crossword"></div>
+<div class="toolbar">
+
+<button id="editBtn">
+Edit Mode
+</button>
+
+<button id="playBtn">
+Play Mode
+</button>
+
+<button id="checkBtn">
+Check
+</button>
+
+<button id="clearBtn">
+Clear
+</button>
+
+<button id="saveBtn">
+Save Layout
+</button>
+
+</div>
+
+<div class="container">
+
+<div id="crossword">
+
+</div>
+
+</div>
+
+<div class="clues">
+
+<div class="across">
+
+<h2>Across</h2>
+
+<div id="acrossList">
+
+</div>
+
+</div>
+
+<div class="down">
+
+<h2>Down</h2>
+
+<div id="downList">
+
+</div>
+
+</div>
+
+</div>
+
+<div id="popup" class="popup">
+
+<div class="popupBox">
+
+<h3>Cell Number</h3>
+
+<input
+type="number"
+id="numberInput"
+placeholder="Number">
+
+<div class="popupButtons">
+
+<button id="saveNumber">
+Save
+</button>
+
+<button id="removeNumber">
+Remove
+</button>
+
+<button id="closePopup">
+Close
+</button>
+
+</div>
+
+</div>
+
+</div>
 
 <script src="script.js"></script>
 
