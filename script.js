@@ -225,3 +225,95 @@ crossword.addEventListener("touchend",(e)=>{
     lastTap=now;
 
 });
+// ============================
+// PART 5 - Save / Load / Hindi
+// ============================
+
+// हर सेल का डेटा
+let letters = new Array(81).fill("");
+
+// ग्रिड अपडेट करें
+function updateLetters() {
+
+    const inputs = document.querySelectorAll(".cell");
+
+    inputs.forEach((cell,index)=>{
+
+        if(cell.tagName==="INPUT"){
+
+            letters[index]=cell.value;
+
+        }
+
+    });
+
+}
+
+// सेव
+function savePuzzle(){
+
+    updateLetters();
+
+    const puzzle={
+
+        layout:layout,
+
+        numbers:numbers,
+
+        letters:letters
+
+    };
+
+    localStorage.setItem(
+        "crossword",
+        JSON.stringify(puzzle)
+    );
+
+    alert("Puzzle Save Ho Gaya");
+
+}
+
+// लोड
+function loadPuzzle(){
+
+    const data=localStorage.getItem("crossword");
+
+    if(!data){
+
+        alert("Koi Save Puzzle Nahi Mila");
+
+        return;
+
+    }
+
+    const puzzle=JSON.parse(data);
+
+    layout.splice(0,81,...puzzle.layout);
+
+    Object.keys(numbers).forEach(k=>delete numbers[k]);
+
+    Object.assign(numbers,puzzle.numbers);
+
+    letters.splice(0,81,...puzzle.letters);
+
+    renderGrid();
+
+    const inputs=document.querySelectorAll(".cell");
+
+    inputs.forEach((cell,index)=>{
+
+        if(cell.tagName==="INPUT"){
+
+            cell.value=letters[index]||"";
+
+        }
+
+    });
+
+}
+
+// Ctrl+S जैसा Save Button
+document.getElementById("saveBtn").onclick=savePuzzle;
+
+// Load Button अगर बाद में जोड़ें
+window.loadPuzzle=loadPuzzle;
