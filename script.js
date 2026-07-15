@@ -1,6 +1,6 @@
-const board=document.getElementById("crossword");
+const crossword = document.getElementById("crossword");
 
-const puzzle=[
+const layout = [
 0,0,0,1,0,0,0,0,0,
 0,1,0,0,0,1,0,1,0,
 0,0,0,1,0,0,0,0,0,
@@ -12,15 +12,15 @@ const puzzle=[
 0,0,0,1,0,0,0,0,0
 ];
 
-puzzle.forEach(v=>{
-if(v==1){
-const d=document.createElement("div");
-d.className="cell black";
-board.appendChild(d);
-}else{
-const i=document.createElement("input");
-i.maxLength=1;
-i.className="cell";
-board.appendChild(i);
-}
+layout.forEach(cell=>{
+    if(cell===1){
+        const div=document.createElement("div");
+        div.className="cell black";
+        crossword.appendChild(div);
+    }else{
+        const input=document.createElement("input");
+        input.className="cell";
+        input.maxLength=1;
+        crossword.appendChild(input);
+    }
 });
