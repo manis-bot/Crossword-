@@ -317,3 +317,79 @@ document.getElementById("saveBtn").onclick=savePuzzle;
 
 // Load Button अगर बाद में जोड़ें
 window.loadPuzzle=loadPuzzle;
+// ============================
+// PART 6 - Double Tap + Hold
+// ============================
+
+let lastTap = 0;
+
+function attachEditorEvents() {
+
+    document.querySelectorAll(".cell").forEach((cell,index)=>{
+
+        if(cell.tagName!=="INPUT") return;
+
+        // Double Tap = Black / White
+        cell.addEventListener("touchend",(e)=>{
+
+            const now=Date.now();
+
+            if(now-lastTap<300){
+
+                layout[index]=layout[index]?0:1;
+
+                renderGrid();
+
+                setTimeout(attachEditorEvents,50);
+
+            }
+
+            lastTap=now;
+
+        });
+
+        // Hold = Number Change
+        let timer;
+
+        cell.addEventListener("touchstart",()=>{
+
+            timer=setTimeout(()=>{
+
+                selectedCell=index;
+
+                popup.style.display="flex";
+
+                numberInput.value=numbers[index]||"";
+
+            },700);
+
+        });
+
+        cell.addEventListener("touchend",()=>{
+
+            clearTimeout(timer);
+
+        });
+
+        // Hindi Input
+        cell.addEventListener("input",()=>{
+
+            letters[index]=cell.value;
+
+        });
+
+    });
+
+}
+
+attachEditorEvents();
+
+const oldRender=renderGrid;
+
+renderGrid=function(){
+
+    oldRender();
+
+    attachEditorEvents();
+
+};
